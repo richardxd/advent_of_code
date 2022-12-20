@@ -1,1 +1,7 @@
 # advent_of_code
+
+This is a colleciton of solutions for advent of code 2022, which can be found here: https://adventofcode.com/
+
+Blog can be found here: https://richardxu6.simple.ink/
+
+Credit to Professor Borja Sotomayor for his handy tools
