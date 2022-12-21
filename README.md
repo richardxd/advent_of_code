@@ -5,3 +5,9 @@ This is a colleciton of solutions for advent of code 2022, which can be found he
 Blog can be found here: https://richardxu6.simple.ink/
 
 Credit to Professor Borja Sotomayor for his handy tools
+
+To run each, do
+"""
+python dayX.py
+"""
+where X is the day.
