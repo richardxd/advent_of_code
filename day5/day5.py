@@ -1,8 +1,8 @@
 """
 Day 5
 https://adventofcode.com/2022/day/5
-1st star: 15 min
-2nd star: less than 5 min
+1st star: 5 min
+2nd star: 10 min
 I hate this question because I need to parse the inputs
 I am borrowing Professor Borja's input reading function, lol.
 """
@@ -58,12 +58,19 @@ def read_input(filename):
 
     return stacks, moves
 def get_top(stacks):
+    """
+    given a collection of stacks, return the top element of each stack
+    """
     result = []
     for stack in stacks:
         result.append(stack[-1])
     return "".join(result)
 
 def crane_segment(stacks, moves):
+    """
+    given stacks and moves, execute the moves and collect the final top elements of each stacks
+    where the moves behave in FIFO
+    """
     stacks = copy.deepcopy(stacks)
     moves = copy.deepcopy(moves)
     for move in moves:
@@ -77,6 +84,10 @@ def crane_segment(stacks, moves):
     return get_top(stacks)
 
 def crane(stacks, moves):
+    """
+    given stacks and moves, execute the moves and collect the final top elements of each stacks
+    where the moves behave in LIFO
+    """
     stacks = copy.deepcopy(stacks)
     moves = copy.deepcopy(moves)
     for move in moves:
