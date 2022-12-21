@@ -1,9 +1,9 @@
 """
-Day 2
+Day 3
 https://adventofcode.com/2022/day/2
-1st star: a bit long setting up everything
-2nd star: long enough to hardcode a hashmap
-I don't know what to put here. the compute score function is indeed messy
+1st star: less than 5 min
+2nd star: less than 5 min
+Rolling!
 """
 import sys
 sys.path.append("../")
