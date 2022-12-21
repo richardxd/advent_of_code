@@ -1,8 +1,8 @@
 """
 Day 6
-https://adventofcode.com/2022/day/5
+https://adventofcode.com/2022/day/6
 1st star: 10 min
-2nd star:  min
+2nd star: 2 min
 Simple Deque
 """
 import sys
