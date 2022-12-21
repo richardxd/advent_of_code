@@ -1,6 +1,6 @@
 """
-Day 3
-https://adventofcode.com/2022/day/2
+Day 4
+https://adventofcode.com/2022/day/4
 1st star: 15 min
 2nd star: less than 5 min
 F**ing merged interval

@@ -1,6 +1,6 @@
 """
 Day 3
-https://adventofcode.com/2022/day/2
+https://adventofcode.com/2022/day/3
 1st star: less than 5 min
 2nd star: less than 5 min
 Rolling!
