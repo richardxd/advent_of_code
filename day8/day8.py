@@ -125,6 +125,4 @@ if __name__ == "__main__":
     util.call_and_print(visible, copy.deepcopy(sample))
     util.call_and_print(visible, copy.deepcopy(input))
 
-    # print("\nTASK 2")
-    # util.call_and_print(delete_directories, sample, 70000000, 30000000)
-    # util.call_and_print(delete_directories, input, 70000000, 30000000)
+
