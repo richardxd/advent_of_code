@@ -22,6 +22,9 @@ from util import log
 import inspect
 
 def lcm(x,y):
+    '''
+    simply compute the lcm of two given integers
+    '''
     return abs(x * y) // math.gcd(x, y)
 
 def compute_lcm(divisibles):
@@ -74,6 +77,9 @@ class Monkey:
 
     @classmethod
     def purge(cls):
+        '''
+        purge the map
+        '''
         monkey_map.clear()   
 
     def perform_operations(self, div_true, lcm):
@@ -107,6 +113,10 @@ class Monkey:
 
 
 def simulate(monkies, rounds, div_true):
+    '''
+    simulate the slinging monkeys behavior by parsing the inputs and 
+    recording the monkeys items after each round
+    '''
     Monkey.purge()
     for monky in monkies:
         mk = Monkey.from_str(monky)
