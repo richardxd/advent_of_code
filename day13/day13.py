@@ -1,10 +1,11 @@
 """
-Day 12
-https://adventofcode.com/2022/day/12
-1st time: 00:15:00
-2nd time: 00:16:00
+Day 13
+https://adventofcode.com/2022/day/13
+1st time: 
+2nd time: 01:57:00
 I spent a ton of time trying to get parser to work only realize that I could have 
 simply invokved the function eval to evaluate python expression.... Good lesson for a python newbie
+Also the comparator function functools is a good lesson
 """
 import sys
 sys.path.append("../")
@@ -94,7 +95,7 @@ def part2(arrays, divider):
     sort the arrays + divider and locate the dividers
     '''
     merged = arrays + divider
-    cmp = cmp_to_key(comparator)
+    cmp = cmp_to_key(comparator) # used for comparator in python
     sorted_array = sorted(merged, key=cmp)
     div1, div2 = divider
     # idx1 = bisect.bisect_left(div1, sorted_array)
