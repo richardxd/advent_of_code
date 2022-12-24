@@ -1,10 +1,10 @@
 """
 Day 16
 https://adventofcode.com/2022/day/16
-1st time: 
-2nd time: 
-
-
+1st time: 02:00:00
+2nd time: 04:00:00
+This is the question that got me stuck forever. I really enjoyed the thinking behind it and coming up
+with the dp solution is such a good feeling!
 """
 import sys
 sys.path.append("../")
@@ -15,6 +15,7 @@ import util
 import math
 import sys
 import re
+import time
 from collections import deque
 from collections import Counter
 import bisect
@@ -192,6 +193,13 @@ def set_kth_bit(n, k):
     '''
     return (1 << k) | n
 
+
+def off_kth_bit(n, k):
+    '''
+    given an number, set its kth bit to 1 and return a new copy of that
+    '''
+    return  ~(1 << (k-1)) & n
+
 def simulate(graph):
     '''
     Given the processed graph, find the desired valves to oepn at different time
@@ -201,7 +209,9 @@ def simulate(graph):
     begin = vertex_bit_map['AA']
     n = 0
     n = set_kth_bit(n, begin)
-
+    length_map = len(vertex_bit_map.keys())
+    
+    all_ones = (1 << (length_map)) - 1
     @lru_cache(maxsize=None)
     def dfs(current, remain_time, valves):
         '''
@@ -223,8 +233,71 @@ def simulate(graph):
             updated_valves = set_kth_bit(valves, k)
             gain = time_valve_on * flow_rate + dfs(dest_name, time_valve_on, updated_valves)
             max_gain = max(gain, max_gain)
+        
         return max_gain
-    return dfs('AA', 30, n)
+
+    
+    
+    def part2():
+        '''
+        Given the current vertex, the remaining time, and the valves(in bitmap) that are on
+        compute the most pressure you can release
+        '''
+        max_gain = 0
+        for i in range(all_ones):
+            max_gain = max(max_gain, dfs('AA', 26, i) + dfs('AA', 26, all_ones - i))
+        return max_gain
+
+
+
+
+    ### legacy code:
+    ### alternatively, compute the second half as a standalone 5-dim dp. which takes half an hour to finish
+    # @lru_cache(maxsize=None)
+    # def dfs2(current_1, current_2, remain_time_1, remain_time_2, valves):
+    #     '''
+    #     Given the current vertex, the remaining time, and the valves(in bitmap) that are on
+    #     compute the most pressure you can release
+    #     '''
+    #     vertex_1 = graph[current_1]
+    #     vertex_2 = graph[current_2]
+    #     max_gain = 0
+    #     for dest_name_1, distance_1 in vertex_1.dist.items():
+            
+    #         k = vertex_bit_map[dest_name_1]
+    #         if is_kth_bit_set(valves, k):
+    #             continue
+            
+    #         dest_vertex_1 = graph[dest_name_1]
+    #         flow_rate_1 = dest_vertex_1.flow_rate
+    #         time_valve_on_1 = remain_time_1 - distance_1 - 1
+    #         time_valve_on_1 = max(time_valve_on_1, 0) # make sure this is not negative    
+            
+    #         # add the destination to the bit map
+    #         updated_valves_1 = set_kth_bit(valves, k)
+            
+            
+    #         # now we introduce the existence of an elephant
+    #         # essentially, repeat the above, except that we need to have two sets of current locations and remain times for both entities
+    #         # and they share the same opened valves
+    #         for dest_name_2, distance_2 in vertex_2.dist.items():
+    #             k_p = vertex_bit_map[dest_name_2]
+    #             if is_kth_bit_set(updated_valves_1, k_p):
+    #                 continue
+    #             dest_vertex_2 = graph[dest_name_2]
+    #             flow_rate_2 = dest_vertex_2.flow_rate
+    #             time_valve_on_2 = remain_time_2 - distance_2 - 1
+    #             time_valve_on_2 = max(time_valve_on_2, 0)
+    #             updated_valves_2 = set_kth_bit(updated_valves_1, k_p)
+    #             gain = time_valve_on_1 * flow_rate_1 + time_valve_on_2 * flow_rate_2 \
+    #                 + dfs2(dest_name_1, dest_name_2, time_valve_on_1, time_valve_on_2, updated_valves_2)
+                
+    #             max_gain = max(gain, max_gain)
+    #     return max_gain  
+
+    
+    return dfs('AA', 30, n), part2()
+
 
 
 def print_graphs(graph, spec=None):
@@ -249,13 +322,13 @@ if __name__ == "__main__":
 
     print(sample_graph.keys())
     
-    print("TASK 1")
+    print("TASK 1 and 2")
     util.call_and_print(simulate, sample_graph)
     util.call_and_print(simulate, input_graph)
     
 
     # print("\nTASK 2")
-    # util.call_and_print(part2, copy.deepcopy(sample_map), 20)
-    # util.call_and_print(part2, copy.deepcopy(input_map), 4000000)
+    # util.call_and_print(simulate, sample_graph, False)
+    # util.call_and_print(simulate, input_graph, False)
 
 
