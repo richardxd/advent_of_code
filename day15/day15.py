@@ -2,9 +2,10 @@
 Day 15
 https://adventofcode.com/2022/day/15
 1st time: 00:32:00
-2nd time: 02:00:00
+2nd time: 02:00:00 (brute force only takes another 5 mins...)
 Part1: Merged interval baby!
 Part2: i give up on finding faster solution. I will just iterate all possible distress beacon coordinates
+also I'm glad I bought a fancy desktop just to get the brute-force solution lol
 """
 import sys
 sys.path.append("../")
