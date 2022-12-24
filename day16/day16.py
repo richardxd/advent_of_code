@@ -87,14 +87,14 @@ def remove_zero_flow(neighbors_map, vertices, vertex):
         
         # drop  the original vertex from the neighbors map
         # if vertex.name in neighbors_map[current_name]:
-        neighbors_map[current_name].remove(vertex.name) # TODO: refactor this maybe to avoid O(n)
+        neighbors_map[current_name].remove(vertex.name) 
         current_vertex = vertices[current_name]
         del current_vertex.dist[vertex.name]
         
-        if current_vertex.flow_rate == 0 and current_vertex.name != 'AA':
-            # add to the buffer and continue the loop
-            zero_flow_vertices.add(current_vertex)
-            continue
+        # if current_vertex.flow_rate == 0 and current_vertex.name != 'AA':
+        #     # add to the buffer and continue the loop
+        #     zero_flow_vertices.add(current_vertex)
+        #     continue
         
 
         # otherwise, we know that we need to keep this vertex. Add an edge between this vertex 
@@ -103,9 +103,9 @@ def remove_zero_flow(neighbors_map, vertices, vertex):
 
             neighbor_vertex = vertices[neighbor_name]
             
-            if neighbor_vertex.flow_rate == 0 and neighbor_vertex.name != 'AA':
-                zero_flow_vertices.add(neighbor_vertex)
-                continue
+            # if neighbor_vertex.flow_rate == 0 and neighbor_vertex.name != 'AA':
+            #     zero_flow_vertices.add(neighbor_vertex)
+            #     continue
             # otherwise, we know that we need to keep this vertex. Add an edge between neighbor vertex and the current vertex
             neighbors_map[current_name].add(neighbor_name)
             neighbors_map[neighbor_name].add(current_name)
@@ -121,8 +121,8 @@ def remove_zero_flow(neighbors_map, vertices, vertex):
 
 
     # now we want to remove the zero flows vertices we have found along the iteration! 
-    for ele in zero_flow_vertices:
-        remove_zero_flow(neighbors_map, vertices, ele)
+    # for ele in zero_flow_vertices:
+    #     remove_zero_flow(neighbors_map, vertices, ele)
     return
     
 
@@ -133,14 +133,11 @@ def parse_graph(raw_input):
     neighbors_map = {} # key: name of the vertex, value: the name of the neighbors of that vertex
     vertices = {} # key: name of the vertex, value: a ptr to the Vertex struct
 
-    zero_flow = [] # a collections of the vertex with zero flow rate
-
 
     for line in raw_input:
         vertex_name, flow_rate, neighbors = parse.parse("Valve {} has flow rate={:d}; tunnels lead to valves {}", line) 
         # map vertex name to different values
         neighbors = neighbors.split(", ")
-    
         vertex = Vertex(vertex_name, flow_rate) 
         vertices[vertex_name] = vertex
         
@@ -148,6 +145,11 @@ def parse_graph(raw_input):
         for v in neighbors:
             vertex.dist[v] = 1
         vertex.dist[vertex_name] = 0
+    # print_graphs(vertices)
+    # print("something is off the chart...")
+    # print_graphs(vertices, spec='HH')
+    # print(neighbors_map['HH'])
+    # print("finished printing")
     # deal with zero flow rate   
     # we want to remove all vertex with zero flow rate
     # for vertex in vertices.values():
@@ -156,6 +158,9 @@ def parse_graph(raw_input):
     keys = list(vertices.keys())
     for key in keys:
         if key in vertices:
+            # print("removing:", key)
+            # print(neighbors_map['HH'])
+            # print(neighbors_map['EE'])
             remove_zero_flow(neighbors_map, vertices, vertices[key])
 
     # done parsing. Now we can store the result in the Vertex 
@@ -173,7 +178,7 @@ def bit_map(graph):
     '''
     given the graph, map each vertex's name to a number that represents its position at the bitmap
     '''
-    return {name:i+1 for i, name in zip(range(len(graph.keys())), graph.keys())}
+    return {name:i for i, name in zip(range(len(graph.keys())), graph.keys())}
 
 def is_kth_bit_set(n,k):
     '''
@@ -181,7 +186,7 @@ def is_kth_bit_set(n,k):
     '''
     return True if n & (1 << k) else False
 
-def set_kth_bit_set(n, k):
+def set_kth_bit(n, k):
     '''
     given an number, set its kth bit to 1 and return a new copy of that
     '''
@@ -195,8 +200,7 @@ def simulate(graph):
     vertex_bit_map = bit_map(graph)
     begin = vertex_bit_map['AA']
     n = 0
-    n = set_kth_bit_set(n, begin)
-    print(vertex_bit_map)
+    n = set_kth_bit(n, begin)
 
     @lru_cache(maxsize=None)
     def dfs(current, remain_time, valves):
@@ -216,13 +220,22 @@ def simulate(graph):
             time_valve_on = max(time_valve_on, 0) # make sure this is not negative    
             
             # add the destination to the bit map
-            updated_valves = set_kth_bit_set(valves, k)
-            gain = time_valve_on * flow_rate + dfs(dest_name, remain_time, updated_valves)
+            updated_valves = set_kth_bit(valves, k)
+            gain = time_valve_on * flow_rate + dfs(dest_name, time_valve_on, updated_valves)
             max_gain = max(gain, max_gain)
         return max_gain
-
-
     return dfs('AA', 30, n)
+
+
+def print_graphs(graph, spec=None):
+    for vertex in graph.values():
+        if spec:
+            if spec != vertex.name:
+                continue
+        print("vertex:", vertex.name)
+        print(" vertex neighbors:", vertex.neighbors)
+        print(" vertex.dist:", vertex.dist.items())
+        print(" vertex.flowrate", vertex.flow_rate)
 
 if __name__ == "__main__":
     util.set_debug(False)
@@ -232,6 +245,7 @@ if __name__ == "__main__":
     
     sample_graph = parse_graph(sample)
     input_graph = parse_graph(input)
+    # print_graphs(sample_graph)
 
     print(sample_graph.keys())
     
