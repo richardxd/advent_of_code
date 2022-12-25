@@ -6,8 +6,8 @@ Blog can be found here: https://richardxu6.simple.ink/
 
 Credit to Professor Borja Sotomayor for his handy tools
 
-To run each, do
-"""
+To run each file, go to the directory of each day and run
+```python
 python dayX.py
-"""
+```
 where X is the day.
