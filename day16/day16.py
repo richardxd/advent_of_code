@@ -1,7 +1,7 @@
 """
 Day 16
 https://adventofcode.com/2022/day/16
-1st time: 02:00:00
+1st time: 04:00:00
 2nd time: 04:00:00
 This is the question that got me stuck forever. I really enjoyed the thinking behind it and coming up
 with the dp solution is such a good feeling!
