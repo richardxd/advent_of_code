@@ -1,10 +1,10 @@
 """
 Day 19
 https://adventofcode.com/2022/day/19
-1st time: 00:10:00
-2nd time: 04:00:00
-I figured out the first half of the question fairly easily. 
-Only to realize that the second half is way more complicated than the first half.
+1st time: 01:00:00
+2nd time: 00:30:00
+I did not believe that the brute-force dfs solves this problem. Then my computer shuts down when I tried the same for the second part
+I was only able to get it when I thought more about the pruning techniques involved.
 """
 import sys
 sys.path.append("../")
