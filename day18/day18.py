@@ -1,10 +1,19 @@
 """
-Day 16
-https://adventofcode.com/2022/day/16
+Day 18
+https://adventofcode.com/2022/day/18
 1st time: 00:10:00
 2nd time: 04:00:00
 I figured out the first half of the question fairly easily. 
 Only to realize that the second half is way more complicated than the first half.
+
+I was primarily bothered by how to deal with this type of situation:
+
++++
++**
++++
+
+where + represents lava and * represents air, because I wouldn't be able to simply check for every edges. 
+Fortunately, I realized that I can append one lines to each direction (like padding) to avoid this problem.
 """
 import sys
 sys.path.append("../")
