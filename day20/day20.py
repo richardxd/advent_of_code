@@ -1,9 +1,10 @@
 """
 Day 20
 https://adventofcode.com/2022/day/20
-1st time: 
+1st time: 02:00:00
 2nd time: 
-
+My original solution did not take into account of the fact that the given list could contain duplicate elements, and I spent a lot of time trying to debug edges cases
+I finally realized that i need to perform % (len - 1) instead of % len
 """
 import sys
 sys.path.append("../")
@@ -26,11 +27,18 @@ from util import log
 
 
 class CircularQueue:
-    def __init__(self, k: int):
-        self.array = [None] * k
+    # the circurlar queue is not fully utilized because the problem is not particularly suited to my original implementattion of circular buffer/queue
+    def __init__(self, raw_input = None, k=None):
+        if raw_input:
+            self.array = copy.deepcopy(raw_input)
+        else:
+            self.array = [None] * k
         self.head = 0
         self.tail = 0
-        self.k = k
+        if not k: 
+            self.k = len(raw_input)
+        else:
+            self.k = k
         self.length = 0
         
 
@@ -102,20 +110,38 @@ class CircularQueue:
         Given the starting index of the circular buffer, find the element 
         corresponding to the position step forward
         '''
-        final_idx = (start_index + (position % self.k)) % self.k 
+        final_idx = (start_index + position) % (self.k)
+        print("FINAL_INDEX:", final_idx)
+        print("SELF.K:", self.k)
         return self.array[final_idx]
 
     
-def part1(raw_input):
-    queue = CircularQueue(len(raw_input))
-    for element in raw_input
-        queue.enQueue(element)
-    
-    for element in raw_input:
-        idx = queue.find_index(element)
-        position = (idx + element) % queue.k
-        queue.move(idx, position)
-    return sum(queue.position(0, 1000), queue.position(0, 2000), queue.position(0, 3000))
+def simulate(raw_input, mixing_number=1, multiplier=1):
+    '''
+    Compute the sum of the elements at 1000th, 2000th, and 3000th position
+    '''
+
+    # we first zip together the values along with their index to make sure that each value is unique
+    # i.e., if the original list is [4, 21, 1], the result is [(4,0), (21, 1), (1,2)]
+    zero_original = raw_input.index(0)
+    zero_tuple = (0, zero_original)
+    raw_input = [multiplier * number for number in raw_input]
+    input_tuple = list(zip(raw_input,range(len(raw_input))))
+    queue = CircularQueue(input_tuple)
+
+    for _ in range(mixing_number):
+        for element in input_tuple:
+            idx = queue.find_index(element)
+            # for each element, we perform the mixing encryption
+            # i.e., move the element to the number of steps equal to its value right in the circular queue        
+            position = (idx + element[0]) % (queue.k - 1) # NOTE: we do % (queue.k - 1) because we remove the element first, and then add it back. Adding is done when the array has (len - 1) number of elements remaining. Hence the minus 1.
+            
+            queue.move(element, position)
+
+    idx_0 = queue.find_index(zero_tuple) # find the zero index
+    # compute the sum
+    print(queue.position(idx_0, 1000), queue.position(idx_0, 2000), queue.position(idx_0, 3000))
+    return sum([queue.position(idx_0, 1000)[0], queue.position(idx_0, 2000)[0], queue.position(idx_0, 3000)[0]])
 
 if __name__ == "__main__":
     util.set_debug(False)
@@ -126,11 +152,11 @@ if __name__ == "__main__":
  
     # note: to not blow up your computer, make sure to only execute one of the following at a time.
     print("TASK 1")
-    util.call_and_print(task1, sample)
-    util.call_and_print(task1, input)
+    util.call_and_print(simulate, sample)
+    util.call_and_print(simulate, input)
     
-    # print("\nTASK 2")
-    # util.call_and_print(task1, sample, 32, 1)
-    # util.call_and_print(task1, input, 32, 1)
+    print("\nTASK 2")
+    util.call_and_print(simulate, sample, 10, 811589153)
+    util.call_and_print(simulate, input, 10, 811589153)
 
 
