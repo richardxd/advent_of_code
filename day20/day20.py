@@ -2,9 +2,11 @@
 Day 20
 https://adventofcode.com/2022/day/20
 1st time: 02:00:00
-2nd time: 
+2nd time: 00:10:00
 My original solution did not take into account of the fact that the given list could contain duplicate elements, and I spent a lot of time trying to debug edges cases
 I finally realized that i need to perform % (len - 1) instead of % len
+
+I spent 10 mins figuring out the second half and desparetely trying to debug only to realize I accidently changed one value in the input file....
 """
 import sys
 sys.path.append("../")
