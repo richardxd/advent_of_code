@@ -1,11 +1,19 @@
 """
 Day 24
 https://adventofcode.com/2022/day/24
-1st time: 0
-2nd time: 0
+1st time: 03:00:00
+2nd time: 00:15:00
 
+My implementation for the first half is quite inefficient and dirty -- there are plenty of edge cases and conditionals that I failed to consider. 
 
+I also spent a fair amount of time trying to optimize my existing code since my blizzard bfs took very long to execute -- the problem that I faced was that
+I did not create the visited set to remove any duplicate visits, since I thought that we may be sitting at the same pair of coordinates in differnt round. But what we may also encounter 
+is the same pair of coordinates in the same round. In other words, this is a 3d BFS instead of a 2d BFS. 
 
+Realizing this speeds up the BFS. 
+
+The other trick is that the blizzard map is unique only up to lcm(mx, my) (mx, my are the length of the available grids excluding the walls). 
+I did not come to this until I read Borja's solution.
 """
 import sys
 sys.path.append("../")
